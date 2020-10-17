@@ -1,0 +1,189 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.profileCard{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.514);
+    width: 300px;
+    height: 150px;
+    position: absolute;
+    right: 0;
+    top: 35px;
+}
+
+.profileCard img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    cursor: pointer;
+    transition: 0.5s;
+    transition-property: box-shadow;
+}
+
+.profileCard img:hover{
+    box-shadow: 0px 0px 17px 5px rgba(42, 177, 166, 0.5);
+}
+
+
+.profileCard .info{
+    margin-left: 70px;
+    text-transform: uppercase;
+    color: white;
+}
+
+.profileCard .info .username{
+    font-weight: 400;
+    position: absolute;
+    top: 5px;
+    font-size: 20px;
+    left: 120px;
+}
+
+.profileCard .info .email{
+    font-weight: 200;
+    font-style: italic;
+    text-decoration: underline;
+    font-size: 11px;
+    position: absolute;
+    left: 100px;
+    top: 40px;
+    transition: 0.2s;
+    transition-property: color;
+}
+
+.profileCard .info .email:hover{
+    color: rgba(48, 151, 219, 0.801);
+    cursor: pointer;
+}
+
+
+
+.profileCard .info .manage{
+    font-weight: 100;
+    position: absolute;
+    top: 95px;
+    font-size: 8px;
+    left: 5px;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    width: 200px;
+    transition: 0.2s;
+    transition-property: color;
+}
+
+.profileCard .info .manage:hover{
+    color: rgba(48, 151, 219, 0.801);
+    cursor: pointer;
+}
+
+
+.profileCard .info .signOut{
+    position: absolute;
+    top: 126px;
+    left: 120px;
+    font-size: medium;
+    text-align: center;
+    font-weight: 100;
+    transition: 0.2s;
+    transition-property: color;
+}
+
+.profileCard .info .signOut:hover{
+    cursor: pointer;
+    color: rgba(48, 151, 219, 0.801);
+}
+
+
+/* For Mobile */
+@media screen and (max-width: 540px) {
+    .profileCard{
+        width: 200px;
+        right: 0;
+        position: absolute; 
+    }
+
+    .profileCard img{
+        width: 45px;
+        height: 45px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    .profileCard .info .manage{
+        position: absolute;
+        top: 90px;
+        right: 0;
+    }
+    .profileCard .info .username{
+        position: absolute;
+        top: 25px;
+        font-size: 14px;
+        left: 80px;
+    }
+    .profileCard .info .email{
+        text-decoration: underline;
+        font-size: 10px;
+        position: absolute;
+        left: 20px;
+        top: 60px;
+    }
+
+    .profileCard .info .signOut{
+        position: absolute;
+        top: 130px;
+        left: 80px;
+        font-size: 12px;
+    }
+}
+
+/* For Tablets */
+@media screen and (min-width: 540px) and (max-width: 780px) {
+    .profileCard{
+        width: 250px;
+        position: absolute;
+    }
+
+    .profileCard img{
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 10px;
+        left: 15px;
+    }
+
+    .profileCard .info .manage{
+        position: absolute;
+        top: 90px;
+        left: 10px;
+    }
+    .profileCard .info .username{
+        position: absolute;
+        top: 10px;
+        font-size: 14px;
+        left: 105px;
+    }
+    .profileCard .info .email{
+        text-decoration: underline;
+        font-size: 10px;
+        position: absolute;
+        left: 70px;
+        top: 45px;
+    }
+
+    .profileCard .info .signOut{
+        position: absolute;
+        top: 125px;
+        left: 100px;
+        font-size: 14px;
+    }
+}
