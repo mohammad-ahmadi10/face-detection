@@ -1,7 +1,7 @@
 *{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box;   
 }
 
 .profileCard{
@@ -37,6 +37,7 @@
 .profileCard .info{
     margin-left: 70px;
     text-transform: uppercase;
+   
     color: white;
 }
 
@@ -46,6 +47,7 @@
     top: 5px;
     font-size: 20px;
     left: 120px;
+    font-family: sans-serif; 
 }
 
 .profileCard .info .email{
@@ -54,10 +56,11 @@
     text-decoration: underline;
     font-size: 11px;
     position: absolute;
-    left: 100px;
+    left: 95px;
     top: 40px;
     transition: 0.2s;
     transition-property: color;
+    font-family: sans-serif; 
 }
 
 .profileCard .info .email:hover{
@@ -75,9 +78,10 @@
     left: 5px;
     text-decoration: underline;
     letter-spacing: 2px;
-    width: 200px;
+    width: 150px;
     transition: 0.2s;
     transition-property: color;
+    font-family: sans-serif; 
 }
 
 .profileCard .info .manage:hover{
@@ -95,6 +99,7 @@
     font-weight: 100;
     transition: 0.2s;
     transition-property: color;
+    font-family: sans-serif; 
 }
 
 .profileCard .info .signOut:hover{
@@ -134,7 +139,7 @@
         text-decoration: underline;
         font-size: 10px;
         position: absolute;
-        left: 20px;
+        left: 12px;
         top: 60px;
     }
 
@@ -168,7 +173,7 @@
     }
     .profileCard .info .username{
         position: absolute;
-        top: 10px;
+        top: 25px;
         font-size: 14px;
         left: 105px;
     }
@@ -176,8 +181,8 @@
         text-decoration: underline;
         font-size: 10px;
         position: absolute;
-        left: 70px;
-        top: 45px;
+        left: 10px;
+        top: 70px;
     }
 
     .profileCard .info .signOut{

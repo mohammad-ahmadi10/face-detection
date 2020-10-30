@@ -12,6 +12,9 @@
     transition: 0.5s ease-in-out;
     transition-property: all;
 }
+#divSideNav{
+    position:fixed;
+}
 
 #divSideNav a:hover {
     left: 0;
@@ -100,9 +103,14 @@
     
 
     .proIcon h3{
+
         transition: 0.5s ease-out ;
         transition-property: opacity translate;
         transition-delay: 0.3s;
+    }
+    .proIcon:hover h3{
+        opacity: 1;
+        transform: translate(110px);
     }
 }
 
@@ -111,5 +119,9 @@
     .proIcon:hover{
         width: 250px;  
       }
-
+    
+    .proIcon:hover h3{
+        opacity: 1;
+        transform: translate(55px);
+    }
 }

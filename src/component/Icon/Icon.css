@@ -10,7 +10,8 @@
 @media screen and (max-width: 540px) {
     .Tilt-inner img{
       width: 75px;   
-      
+      position: absolute;
+      left: -30px;
     }
 }
 

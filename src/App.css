@@ -9,3 +9,8 @@
   z-index: 4;
   
 }
+
+.middle-wrapper{
+  display: flex;
+  background-color: blue;
+}

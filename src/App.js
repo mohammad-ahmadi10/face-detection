@@ -1,8 +1,19 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect, useRef} from 'react';
 import './App.css';
 import Particles from "react-tsparticles";
 import Nav from './component/Nav/Nav.js';
 import Icon from './component/Icon/Icon.js';
+import InfoRank from './component/InfoRank/InfoRank.js';
+import Input from './component/Input/Input.js';
+import PhotoRender from './component/PhotoRender/PhotoRender.js';
+import Clarifai from 'clarifai';
+
+const app = new Clarifai.App({
+ apiKey: 'fdd9b1e218cc4b83bbb16bce6a76b8dc'
+});
+
+
+
 
 
 const colors = ["#fff",
@@ -14,7 +25,6 @@ const colors = ["#fff",
                 "#663399",
                 "#778899"
               ]
-
 
 const costumParticles = {
         
@@ -101,15 +111,70 @@ const costumParticles = {
 }
 
 
-
 function App() {
+  const wrapper = useRef();
+
   const [isProActive, setProActive] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [boxes , SetBoxes] = useState([]);
+  let url = inputValue;
+
+  let numOfFaces = 0;
+
+
+  const calculateCorners = (data) =>{
+    const img = document.getElementById("imgUrl");
+    const width = Number( img.width);
+    const height = Number(img.height);
+    let faces = [];
+
+        for(let i=0; i < numOfFaces; i++){
+             let clarifaiFace =  data.outputs[0].data.regions[i].region_info.bounding_box;
+          
+             let box = {
+              left: (clarifaiFace.left_col * width),
+              right: width - clarifaiFace.right_col * width,
+              top: clarifaiFace.top_row * height,
+              bottom: (height*1.02) - (clarifaiFace.bottom_row * height)
+              };
+             faces.push(box);          
+        }
+      return faces;
+    }
+
+
+ 
+  const onSumit =  () =>{
+    setPhotoUrl("");
+    setPhotoUrl(url);
+    app.models.predict("d02b4508df58432fbb84e800597b8959", {url}).then(
+    function(response) {
+    // do something with11 response
+    numOfFaces =  response.outputs[0].data.regions.length;
+    SetBoxes(calculateCorners(response));
+    },
+    function(err) {
+      console.log(err);
+    }
+  )
+  }
+
+
+  useEffect(() =>{
+    let boxes = document.querySelectorAll(".bound_box");
+    boxes.forEach(box => {
+      box.remove();
+    });
+  }, [photoUrl]);
+
+
+
+
 
   return (
-    <div onClick={(event) => {if (event.target.className === "tsparticles-canvas-el")
-                                setProActive(false)
-                              }}
-    >
+    <div ref={wrapper} onClick={(event) => {if (event.target.className === "tsparticles-canvas-el")
+                                setProActive(false) }} >
 
       <Particles 
          id="tsparticles"
@@ -117,11 +182,13 @@ function App() {
       />
 
       <Nav isProActive={isProActive} setProActive={setProActive}/>  
+      <PhotoRender photoUrl={photoUrl} boxes={boxes}/>     
+      <Input onSumit={onSumit}  setInputValue={setInputValue}/>   
+      <InfoRank/>
       <Icon/>
-
+        
 
     </div>
   );
 }
-
 export default App;

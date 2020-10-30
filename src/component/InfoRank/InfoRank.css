@@ -1,0 +1,114 @@
+.rankContainer{
+    width: 50%;
+    z-index: -200;
+    margin:auto;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    top: 10%;
+    left: 25%;
+    right: 25%;
+    padding: 0 3%;
+    height: fit-content;
+}
+
+.rank{
+    margin:auto;
+    font-weight: 200;
+    width: 95%;
+    height: fit-content;
+}
+
+
+.rank h5{
+    font-size: 2.5rem;
+    color: rgb(42, 18, 88);
+    font-weight: 800;
+}
+
+.rank .rank-num{
+    font-size: 3rem;
+    color: rgb(255,255,255);
+    font-style: italic;
+}
+
+
+
+/* For Mobile */
+@media screen and (max-width: 540px) {
+    .rankContainer{
+        width: 50%;
+        z-index: -1;
+        margin:auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: absolute;
+        top: 35%;
+        left: 10%;
+        width: 350px;
+    }
+    .rank{
+        margin:auto;
+        font-weight: 200;
+        width: 95%;
+        height: fit-content;
+    }
+
+    .rank h5{
+        font-size: 1.5rem;
+        color: rgb(42, 18, 88);
+        font-weight: 800;
+
+    }
+    .rank h5 span{
+        position: absolute;
+        top: -110%;
+        left: 48%;
+        font-size: 2.5rem;        
+    }
+    
+    .rank .rank-num{
+        font-size: 2.5rem;
+        color: rgb(255,255,255);
+        font-style: italic;
+    }
+    
+}
+
+/* For Tablets */
+@media screen and (min-width: 540px) and (max-width: 850px) {
+    .rankContainer{
+        width: 50%;
+        z-index: -1;
+        margin:auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: absolute;
+        top: 10%;
+        left: 35%;
+        right: 15%;
+    }
+    .rank{
+        margin:auto;
+        font-weight: 200;
+        width: 95%;
+        height: fit-content;
+    }
+
+    .rank h5{
+        font-size: 2rem;
+        color: rgb(42, 18, 88);
+        font-weight: 800;
+    }
+    
+    .rank .rank-num{
+        font-size: 2.5rem;
+        color: rgb(255,255,255);
+        font-style: italic;
+    }
+}
