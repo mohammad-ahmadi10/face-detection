@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useRef} from 'react';
+import React,{useState, useEffect } from 'react';
 import './App.css';
 import Particles from "react-tsparticles";
 import Nav from './component/Nav/Nav.js';
@@ -11,8 +11,6 @@ import Clarifai from 'clarifai';
 const app = new Clarifai.App({
  apiKey: 'fdd9b1e218cc4b83bbb16bce6a76b8dc'
 });
-
-
 
 
 
@@ -112,14 +110,12 @@ const costumParticles = {
 
 
 function App() {
-  const wrapper = useRef();
 
   const [isProActive, setProActive] = useState(false);
   const [photoUrl, setPhotoUrl] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [boxes , SetBoxes] = useState([]);
   let url = inputValue;
-
   let numOfFaces = 0;
 
 
@@ -142,9 +138,8 @@ function App() {
         }
       return faces;
     }
+  
 
-
- 
   const onSumit =  () =>{
     setPhotoUrl("");
     setPhotoUrl(url);
@@ -157,9 +152,20 @@ function App() {
     function(err) {
       console.log(err);
     }
-  )
+    )
+    document.getElementById("urlInput").value = "";
+    document.getElementsByClassName("chooseFileButton")[0].classList.remove("deaktive-image-uploader");
+    showGoButton("22%", "translate(0, 0)", "hidden", "0","-1");
   }
 
+  const showGoButton = (right, translate, visibility, opacity, zIndex) =>{
+    const button = document.getElementById("button");
+    button.style.right= right;
+    button.style.transform = translate;
+    button.style.visibility = visibility;
+    button.style.opacity = opacity;
+    button.style.zIndex= zIndex;
+  }
 
   useEffect(() =>{
     let boxes = document.querySelectorAll(".bound_box");
@@ -173,8 +179,11 @@ function App() {
 
 
   return (
-    <div ref={wrapper} onClick={(event) => {if (event.target.className === "tsparticles-canvas-el")
-                                setProActive(false) }} >
+    <div onClick={(event) => {
+                                if (event.target.className === "tsparticles-canvas-el")
+                                setProActive(false) 
+                             
+                                }} >
 
       <Particles 
          id="tsparticles"
@@ -183,7 +192,7 @@ function App() {
 
       <Nav isProActive={isProActive} setProActive={setProActive}/>  
       <PhotoRender photoUrl={photoUrl} boxes={boxes}/>     
-      <Input onSumit={onSumit}  setInputValue={setInputValue}/>   
+      <Input onSumit={onSumit}  setInputValue={setInputValue} showGoButton={showGoButton}/>   
       <InfoRank/>
       <Icon/>
         

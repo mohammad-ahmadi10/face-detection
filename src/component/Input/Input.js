@@ -1,9 +1,13 @@
 import React,{Component} from 'react';
 import "./Input.css";
 import ImageUploader from 'react-images-upload';
- 
+import firebase from "./firebase";
 
-const UploaderStyle = {width:"50%",
+
+  // eslint-disable-next-line no-useless-escape
+const regEx = new RegExp(/(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))/);
+  
+const UploaderStyle = {width:"60%",
                         height:"100%",
                         minWidth:"200px",
                         margin:"0", 
@@ -14,50 +18,107 @@ const UploaderStyle = {width:"50%",
                         boxShadow: "0px 0px 20px 10px rgba(194, 179, 43, 0.293)",
                     }
 
-
 class Input extends Component {
 
     constructor(props){
         super(props);
-        this.state = {pic : ""};
-        this.onDrop = this.onDrop.bind(this);
-        
+        this.state = {pic : null};
     }
+   
     
-    onDrop(picture){
-        this.setState({
-            pic: picture
-        })
-        console.log(picture[0]);
-        this.props.setInputValue(picture[0].name);
-        
+    onDrop = (picture) =>{
+
+        if(/^.+\.(([pP][dD][fF])|([pP][gG]))$/.test(picture)){
+            console.log("bad File");
+            return;
+        }
+        else{
+            this.setState({
+                pic: picture
+            })
+            this.uploadImage(picture);
+        }
     }
 
-    render() {
-        const onInputChange = (event) =>{
-            const button = document.getElementById("button");
-            const {value} = event.target;
-            
-            //visibility the Button by entering value
-            if(value.length > 0){
-                button.style.right= "26%";
-                button.style.transform = "translate(-40%, 0)";
-                button.style.visibility = "visible";
-                button.style.opacity = "1";
-                button.style.zIndex= "1";
-               
-            }else{
-                button.style.transform = "translate(0, 0)";
-                button.style.visibility = "hidden";
-                button.style.opacity = "0";
-                button.style.zIndex= "-1";
+    changeImageOnInputChange = ()=>{
+        const urlInput = document.getElementById("urlInput");
+        let chooseAndUploadBtn = document.getElementsByClassName("chooseFileButton")[0]; 
+
+        //visibility the Button by entering value 
+        if(regEx.test(urlInput.value)){
+            this.props.showGoButton("26%", "translate(-40%, 0)", "visible", "1","1");
+            chooseAndUploadBtn.classList.add("deaktive-image-uploader");
+        }else{
+            this.props.showGoButton("22%", "translate(0, 0)", "hidden", "0","-1");
+            if(chooseAndUploadBtn.classList.contains("deaktive-image-uploader")){
+                chooseAndUploadBtn.classList.remove("deaktive-image-uploader");
             }
-            
-            this.props.setInputValue(value);
         }
 
+    }
+
+    uploadImage = (picture) =>{
+        if(typeof picture.value === 'undefined')return;
+        let bucetName = "images";
+        let pictures = picture[0];
+        let storageRef = firebase.storage().ref(`${bucetName}/${pictures.name}`);
+        let uploadTask = storageRef.put(pictures);
+
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, 
+            () =>{
+                // eslint-disable-next-line no-unused-vars
+                let donwloadURL = uploadTask.snapshot.donwloadURL;
+                
+            }); 
+        
+            
+        let putButtonWrapper = document.querySelector("#button-put-container");
+        
+        if (putButtonWrapper.classList.contains("deaktive-put-putton")) {
+            putButtonWrapper.classList.remove("deaktive-put-putton");
+          }
+       // putButton.classList.add("aktive-put-putton");
+
+        
+        
+    }
+
+    putURL = () => {
+        setTimeout(()=>{
+            let storageRef = firebase.storage().ref();
+            let pic = this.state.pic[0];
+            storageRef.child('images/' + pic.name);
+            storageRef.child('images/' + pic.name).getDownloadURL().then(url => {
+                let inputText = document.getElementById("urlInput");
+                inputText.innerHTML = "";
+                inputText.innerHTML = url;
+                inputText.value = url;
+                this.props.setInputValue(url);
+                this.changeImageOnInputChange();
+            });
+        }, 500);
+        let putButtonWrapper = document.querySelector("#button-put-container");
+        putButtonWrapper.classList.add("deaktive-put-putton");
+        
+    };
+   
+
+    
+
+
+
+    render() {
+    
+        const onInputChange = (event) =>{
+            const {value} = event.target;
+            this.props.setInputValue(value);
+            this.changeImageOnInputChange();
+        }
+
+       
+
         return (
-            <div class="container">
+            <div className="container">
                 <div id="inputs-wrapper">               
                     <div className="input-container"> 
                         <input type="text" 
@@ -66,23 +127,40 @@ class Input extends Component {
                                placeholder="enter your URL"
                                onChange={onInputChange}
                         />
-                        <input id="button" type="button" value="Go"/>
+                        <input id="button" 
+                                type="button" 
+                                value="Go" 
+                                onClick={this.props.onSumit}
+                        />
                     </div>
                  {/* ImageUploader */}
-
-                 <ImageUploader
-                            className="uploader"
-                            withIcon={true}
-                            fileContainerStyle={UploaderStyle}
-                            buttonText="choose & Upload"
-                            onChange={this.onDrop}
-                            withLabel= {false}
-                            imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                            maxFileSize={5242880}
-                            singleImage=  {true}
-                            buttonStyles={{fontFamily:"Arial"}}
-                 />
+                <div id="imageUploader-wrapper">
+                    <ImageUploader
+                                className="uploader"
+                                withIcon={true}
+                                fileContainerStyle={UploaderStyle}
+                                buttonText="choose & Upload"
+                                onChange={this.onDrop}
+                                withLabel= {false}
+                                imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                maxFileSize={5242880}
+                                singleImage=  {true}
+                                buttonStyles={{fontFamily:"Arial"}}
+                                errorClass= "unsoportedFile"
+                    />
+                </div>
+               
                     {/* End ImageUploader */}
+                    <div id="button-put-container" className="deaktive-put-putton">
+                            <label>
+                                <p><span>Uploaded Successfully!</span>Put the URL, Click on Button GO</p>
+                            </label>
+                            <input id="put-button" 
+                                   className="" 
+                                   value="put" 
+                                   type="button" 
+                                   onClick={this.putURL}/>
+                    </div>
                 </div>
             </div>
            
