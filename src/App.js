@@ -6,7 +6,12 @@ import Icon from './component/Icon/Icon.js';
 import InfoRank from './component/InfoRank/InfoRank.js';
 import Input from './component/Input/Input.js';
 import PhotoRender from './component/PhotoRender/PhotoRender.js';
+import Register from './component/Register/Register.js';
+import Login from './component/Login/Login.js';
+
 import Clarifai from 'clarifai';
+
+
 
 const app = new Clarifai.App({
  apiKey: 'fdd9b1e218cc4b83bbb16bce6a76b8dc'
@@ -115,6 +120,8 @@ function App() {
   const [photoUrl, setPhotoUrl] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [boxes , SetBoxes] = useState([]);
+  const [isImageDetected, setIsImageDetected] = useState(false);
+
   let url = inputValue;
   let numOfFaces = 0;
 
@@ -141,21 +148,34 @@ function App() {
   
 
   const onSumit =  () =>{
-    setPhotoUrl("");
-    setPhotoUrl(url);
-    app.models.predict("d02b4508df58432fbb84e800597b8959", {url}).then(
-    function(response) {
-    // do something with11 response
-    numOfFaces =  response.outputs[0].data.regions.length;
-    SetBoxes(calculateCorners(response));
-    },
-    function(err) {
-      console.log(err);
+    let boxes = document.getElementsByClassName("bound_box");
+    console.log(boxes);
+    for(let i=0; i < boxes.length; i++){
+      boxes[i].remove();
     }
-    )
+
+    setTimeout(()=>{
+      setPhotoUrl("");
+      setPhotoUrl(url);
+      app.models.predict("d02b4508df58432fbb84e800597b8959", {url}).then(
+      function(response) {
+      // do something with11 response
+      numOfFaces =  response.outputs[0].data.regions.length;
+      SetBoxes(calculateCorners(response));
+      },
+      function(err) {
+        console.log(err);
+      }
+      )
+    }, 300);
+   
+    
     document.getElementById("urlInput").value = "";
     document.getElementsByClassName("chooseFileButton")[0].classList.remove("deaktive-image-uploader");
     showGoButton("22%", "translate(0, 0)", "hidden", "0","-1");
+    setIsImageDetected(true);
+    setTimeout( async () => setIsImageDetected(false), 50);
+  
   }
 
   const showGoButton = (right, translate, visibility, opacity, zIndex) =>{
@@ -191,11 +211,12 @@ function App() {
       />
 
       <Nav isProActive={isProActive} setProActive={setProActive}/>  
-      <PhotoRender photoUrl={photoUrl} boxes={boxes}/>     
+      <PhotoRender photoUrl={photoUrl} boxes={boxes} isImageDetected={isImageDetected}/>     
       <Input onSumit={onSumit}  setInputValue={setInputValue} showGoButton={showGoButton}/>   
       <InfoRank/>
       <Icon/>
-        
+      <Register/>
+      <Login/>
 
     </div>
   );

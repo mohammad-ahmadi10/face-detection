@@ -95,12 +95,12 @@
 }
 .active-put-button{
     visibility: visible;
-    transition: 0.5s ease-out visibility;
+    transition: 0.3s ease-out visibility;
 }
 
 .deaktive-put-putton{
     visibility: hidden;
-    transition: 0.5s ease-out visibility;
+    transition: 0.3s ease-out visibility;
 }
 
 

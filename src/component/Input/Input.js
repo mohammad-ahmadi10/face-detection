@@ -27,12 +27,13 @@ class Input extends Component {
    
     
     onDrop = (picture) =>{
-
-        if(/^.+\.(([pP][dD][fF])|([pP][gG]))$/.test(picture)){
+       
+        if(/^.+\.(([pP][dD][fF])|([pP][gG]))$/.test(picture[0].name)){
             console.log("bad File");
             return;
         }
         else{
+                 
             this.setState({
                 pic: picture
             })
@@ -58,7 +59,7 @@ class Input extends Component {
     }
 
     uploadImage = (picture) =>{
-        if(typeof picture.value === 'undefined')return;
+        if(typeof picture[0].name === 'undefined')return;
         let bucetName = "images";
         let pictures = picture[0];
         let storageRef = firebase.storage().ref(`${bucetName}/${pictures.name}`);
@@ -72,8 +73,12 @@ class Input extends Component {
             }); 
         
             
-        let putButtonWrapper = document.querySelector("#button-put-container");
+            let putButtonWrapper = document.querySelector("#button-put-container");
+            let putButton = document.querySelector("#put-button");
         
+        if (putButton.classList.contains("deaktive-put-putton")) {
+                putButton.classList.remove("deaktive-put-putton");
+              }
         if (putButtonWrapper.classList.contains("deaktive-put-putton")) {
             putButtonWrapper.classList.remove("deaktive-put-putton");
           }
@@ -98,7 +103,9 @@ class Input extends Component {
             });
         }, 500);
         let putButtonWrapper = document.querySelector("#button-put-container");
+        let putButton = document.querySelector("#put-button");
         putButtonWrapper.classList.add("deaktive-put-putton");
+        putButton.classList.add("deaktive-put-putton");
         
     };
    
